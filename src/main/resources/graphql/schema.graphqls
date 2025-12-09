@@ -1,0 +1,64 @@
+type Query {
+    student(id: ID!): Student
+    studentByCode(code: String!): Student
+    students(status: StudentStatus): [Student!]!
+}
+
+type Mutation {
+    createStudent(input: CreateStudentInput!): Student!
+    updateStudent(id: ID!, input: UpdateStudentInput!): Student!
+    activateStudent(id: ID!): Boolean!
+    suspendStudent(id: ID!): Boolean!
+    graduateStudent(id: ID!): Boolean!
+    deleteStudent(id: ID!): Boolean!
+}
+
+type Student {
+    id: ID!
+    studentCode: String!
+    firstName: String!
+    lastName: String!
+    email: String!
+    dateOfBirth: String
+    street: String
+    city: String
+    state: String
+    postalCode: String
+    country: String
+    status: StudentStatus!
+    enrollmentDate: String!
+    createdAt: String
+    updatedAt: String
+}
+
+input CreateStudentInput {
+    studentCode: String!
+    firstName: String!
+    lastName: String!
+    email: String!
+    dateOfBirth: String
+    street: String
+    city: String
+    state: String
+    postalCode: String
+    country: String
+}
+
+input UpdateStudentInput {
+    firstName: String!
+    lastName: String!
+    email: String!
+    dateOfBirth: String
+    street: String
+    city: String
+    state: String
+    postalCode: String
+    country: String
+}
+
+enum StudentStatus {
+    ACTIVE
+    SUSPENDED
+    GRADUATED
+    WITHDRAWN
+}
