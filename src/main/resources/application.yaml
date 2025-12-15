@@ -32,10 +32,18 @@ spring:
       path: /graphiql
     http:
       path: /graphql
+    websocket:
+      path: /graphql
 
 # Server Configuration
 server:
   port: 8081
+
+# JWT Configuration
+jwt:
+  secret: mySecretKeyForJWTTokenGenerationMustBeAtLeast256BitsLongForHS256Algorithm
+  access-token-expiration: 900000    # 15 minutes in milliseconds
+  refresh-token-expiration: 604800000 # 7 days in milliseconds
 
 # Logging
 logging:

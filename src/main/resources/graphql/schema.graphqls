@@ -1,64 +1,85 @@
 type Query {
-    student(id: ID!): Student
-    studentByCode(code: String!): Student
-    students(status: StudentStatus): [Student!]!
+    user(id: ID!): User
+    userByUsername(username: String!): User
+    users(role: Role): [User!]!
+    me: User
 }
 
 type Mutation {
-    createStudent(input: CreateStudentInput!): Student!
-    updateStudent(id: ID!, input: UpdateStudentInput!): Student!
-    activateStudent(id: ID!): Boolean!
-    suspendStudent(id: ID!): Boolean!
-    graduateStudent(id: ID!): Boolean!
-    deleteStudent(id: ID!): Boolean!
+    # Authentication
+    login(input: LoginInput!): AuthResponse!
+    logout: Boolean!
+    refreshToken(refreshToken: String!): AuthResponse!
+
+    # User management
+    register(input: RegisterInput!): User!  # role optional, default STUDENT
+    updateUser(id: ID!, input: UpdateUserInput!): User!
+    changePassword(id: ID!, newPassword: String!): Boolean!
+    changeRole(id: ID!, role: Role!): User!
+    enableUser(id: ID!): Boolean!
+    disableUser(id: ID!): Boolean!
+    deleteUser(id: ID!): Boolean!
+
+    # Message sending
+    sendMessage(input: SendMessageInput!): Message!
 }
 
-type Student {
+type User {
     id: ID!
-    studentCode: String!
-    firstName: String!
-    lastName: String!
+    username: String!
     email: String!
-    dateOfBirth: String
-    street: String
-    city: String
-    state: String
-    postalCode: String
-    country: String
-    status: StudentStatus!
-    enrollmentDate: String!
-    createdAt: String
+    role: Role!
+    enabled: Boolean!
+    createdAt: String!
     updatedAt: String
 }
 
-input CreateStudentInput {
-    studentCode: String!
-    firstName: String!
-    lastName: String!
-    email: String!
-    dateOfBirth: String
-    street: String
-    city: String
-    state: String
-    postalCode: String
-    country: String
+type AuthResponse {
+    accessToken: String!
+    refreshToken: String!
+    tokenType: String!
+    expiresIn: Int!
+    userId: String!
+    username: String!
+    role: Role!
 }
 
-input UpdateStudentInput {
-    firstName: String!
-    lastName: String!
-    email: String!
-    dateOfBirth: String
-    street: String
-    city: String
-    state: String
-    postalCode: String
-    country: String
+input LoginInput {
+    username: String!
+    password: String!
 }
 
-enum StudentStatus {
-    ACTIVE
-    SUSPENDED
-    GRADUATED
-    WITHDRAWN
+input RegisterInput {
+    username: String!
+    password: String!
+    email: String!
+    role: Role  # Optional - default STUDENT if not provided
+}
+
+input UpdateUserInput {
+    username: String
+    email: String
+}
+
+input SendMessageInput {
+    receiverId: ID!
+    content: String!
+}
+
+enum Role {
+    ADMIN
+    STUDENT
+}
+
+type Message {
+    id: ID!
+    senderId: ID!
+    receiverId: ID!
+    content: String!
+    timestamp: String!
+}
+
+type Subscription {
+    newUserRegistered: User!
+    newMessageReceived(userId: ID!): Message!
 }
