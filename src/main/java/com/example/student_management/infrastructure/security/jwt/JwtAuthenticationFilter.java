@@ -1,5 +1,6 @@
 package com.example.student_management.infrastructure.security.jwt;
 
+import com.example.student_management.domain.model.user.Role;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -53,7 +54,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             if (jwtTokenProvider.validateToken(token)) {
                 try {
                     String username = jwtTokenProvider.getUsernameFromToken(token);
-                    var role = jwtTokenProvider.getRoleFromToken(token);
+                    Role role = jwtTokenProvider.getRoleFromToken(token);
 
                     // Create authorities from role in JWT
                     var authorities = List.of(new SimpleGrantedAuthority("ROLE_" + role.name()));
