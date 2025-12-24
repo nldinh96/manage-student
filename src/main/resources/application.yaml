@@ -41,7 +41,7 @@ server:
 
 # JWT Configuration
 jwt:
-  secret: mySecretKeyForJWTTokenGenerationMustBeAtLeast256BitsLongForHS256Algorithm
+  secret: HanEmHangXom
   access-token-expiration: 900000    # 15 minutes in milliseconds
   refresh-token-expiration: 604800000 # 7 days in milliseconds
 

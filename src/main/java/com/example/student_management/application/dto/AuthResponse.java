@@ -12,10 +12,12 @@ public record AuthResponse(
         int expiresIn,
         String userId,
         String username,
-        Role role
+        Role role,
+        String decodedAccessToken,
+        String decodedRefreshToken
 ) {
     public AuthResponse(String accessToken, String refreshToken, long expiresIn,
                         String userId, String username, Role role) {
-        this(accessToken, refreshToken, "Bearer", (int) expiresIn, userId, username, role);
+        this(accessToken, refreshToken, "Bearer", (int) expiresIn, userId, username, role, "", "");
     }
 }

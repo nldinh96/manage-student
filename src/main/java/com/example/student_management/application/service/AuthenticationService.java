@@ -58,10 +58,13 @@ public class AuthenticationService {
         return new AuthResponse(
                 accessToken,
                 refreshToken,
-                jwtProperties.getAccessTokenExpiration() / 1000, // Convert to seconds
+                "Bearer",
+                (int) (jwtProperties.getAccessTokenExpiration() / 1000),
                 user.getId().toString(),
                 user.getUsername(),
-                user.getRole()
+                user.getRole(),
+                decodeToken(accessToken),
+                decodeToken(refreshToken)
         );
     }
 
@@ -99,11 +102,14 @@ public class AuthenticationService {
 
         return new AuthResponse(
                 newAccessToken,
-                refreshToken, // Return same refresh token
-                jwtProperties.getAccessTokenExpiration() / 1000,
+                refreshToken,
+                "Bearer",
+                (int) (jwtProperties.getAccessTokenExpiration() / 1000),
                 user.getId().toString(),
                 user.getUsername(),
-                user.getRole()
+                user.getRole(),
+                decodeToken(newAccessToken),
+                decodeToken(refreshToken)
         );
     }
 
@@ -117,5 +123,14 @@ public class AuthenticationService {
             return true;
         }
         return false;
+    }
+
+    private String decodeToken(String token) {
+        try {
+            var claims = jwtTokenProvider.parseClaims(token);
+            return claims.toString();
+        } catch (Exception e) {
+            return "Invalid token";
+        }
     }
 }

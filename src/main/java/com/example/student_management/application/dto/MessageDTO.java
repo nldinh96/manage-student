@@ -8,15 +8,18 @@ import lombok.NoArgsConstructor;
 import java.time.Instant;
 import java.util.UUID;
 
-@Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class MessageDTO {
     private UUID id;
-    private UUID senderId;
+    public UUID senderId;
     private UUID receiverId;
     private String content;
-    private Instant timestamp;
+    public Instant timestamp;
+    
+    public UUID getId() { return id; }
+    public UUID getReceiverId() { return receiverId; }
+    public String getContent() { return content; }
 }
 

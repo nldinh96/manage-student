@@ -42,6 +42,8 @@ type AuthResponse {
     userId: String!
     username: String!
     role: Role!
+    decodedAccessToken: String!
+    decodedRefreshToken: String!
 }
 
 input LoginInput {
@@ -73,10 +75,10 @@ enum Role {
 
 type Message {
     id: ID!
-    senderId: ID!
+    senderId: ID
     receiverId: ID!
     content: String!
-    timestamp: String!
+    timestamp: String
 }
 
 type Subscription {

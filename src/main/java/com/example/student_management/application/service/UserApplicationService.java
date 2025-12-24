@@ -91,6 +91,16 @@ public class UserApplicationService {
 
         // Use provided role or default to STUDENT
         Role role = request.role() != null ? request.role() : Role.STUDENT;
+        
+        // Only ADMIN can register with ADMIN role
+        if (role == Role.ADMIN) {
+            var authentication = SecurityContextHolder.getContext().getAuthentication();
+            if (authentication == null || !authentication.isAuthenticated() 
+                || !authentication.getAuthorities().stream()
+                    .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"))) {
+                throw new RuntimeException("Only ADMIN can register users with ADMIN role");
+            }
+        }
 
         User user = User.create(
                 request.username(),

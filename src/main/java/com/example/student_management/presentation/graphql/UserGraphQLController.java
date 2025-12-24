@@ -54,6 +54,7 @@ public class UserGraphQLController {
 
     /**
      * Register user - role is optional, defaults to STUDENT
+     * Only ADMIN can register with ADMIN role
      */
     @MutationMapping
     public UserDTO register(@Argument("input") RegisterRequest input) {

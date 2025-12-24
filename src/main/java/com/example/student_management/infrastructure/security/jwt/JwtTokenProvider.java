@@ -124,7 +124,10 @@ public class JwtTokenProvider {
         }
     }
 
-    private Claims parseClaims(String token) {
+    /**
+     * Parse claims from token (make public for AuthenticationService)
+     */
+    public Claims parseClaims(String token) {
         return Jwts.parser()
                 .verifyWith(getSigningKey())
                 .build()
